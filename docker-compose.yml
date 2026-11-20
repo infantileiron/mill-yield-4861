@@ -6,6 +6,10 @@ x-app: &app
     REDIS_URL: redis://redis:6379/0
     JWT_SECRET: ${JWT_SECRET:-mill-local-development-secret-change-32-chars}
     SEED_DEMO: ${SEED_DEMO:-true}
+    YIELD_INDEX_WINDOW_HOURS: ${YIELD_INDEX_WINDOW_HOURS:-24}
+    YIELD_INDEX_LATE_MINUTES: ${YIELD_INDEX_LATE_MINUTES:-30}
+    YIELD_INDEX_STALE_BUILD_MINUTES: ${YIELD_INDEX_STALE_BUILD_MINUTES:-30}
+    YIELD_INDEX_SYNC_SECONDS: ${YIELD_INDEX_SYNC_SECONDS:-15}
   volumes: [artifacts:/artifacts]
   depends_on:
     db: {condition: service_healthy}

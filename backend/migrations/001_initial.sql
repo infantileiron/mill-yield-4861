@@ -2,3 +2,12 @@
 -- This migration documents the business keys used for idempotent demo seed.
 -- batches.code UNIQUE; inspections.sample_code UNIQUE; users.email UNIQUE.
 -- reviews stores immutable JSON snapshots, result checksum and approver identity.
+
+-- 002 rolling yield index (applied idempotently by src/config/migrations.py):
+-- inspections.sampled_at / recorded_at TIMESTAMPTZ NULL; index ix_inspections_sampled_at.
+-- reviews.source ('legacy'|'indexed'), index_generation_id, index_watermark,
+--   index_entry_count, index_lagging, window_hours/from/to, legacy_count.
+-- yield_index_state: id=1 控制行，active_generation_id / building_generation_id / status。
+-- yield_index_generations: 每代状态、窗口小时、快照 id、水位、计数、时间戳。
+-- yield_index_entries: 物化样本，UNIQUE(generation_id, inspection_id)，
+--   索引 (generation_id, line, sampled_at) 与 (generation_id, sampled_at)。
